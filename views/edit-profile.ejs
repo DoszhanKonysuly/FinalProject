@@ -10,8 +10,7 @@
 <body>
     <div class="container mt-5">
         <h1>Edit Profile</h1>
-        <% console.log('User pictures:', user.pictures); %>
-        <form action="/edit-profile" method="POST" enctype="multipart/form-data">
+        <form action="/edit-profile" method="POST">
             <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>">
@@ -27,38 +26,21 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password">
-            </div><!-- Update the HTML to display images -->
-            <div class="form-group">
-                <label for="image1">Image 1</label>
-                <input type="file" class="form-control-file" id="image1" name="image" accept="image/*">
-                <% if (user.pictures && user.pictures.length > 0) { %>
-                    <img src="/<%= user.pictures[0] %>" alt="Image 1">
-                <% } %>
             </div>
             <div class="form-group">
-                <label for="image2">Image 2</label>
-                <input type="file" class="form-control-file" id="image2" name="image" accept="image/*">
-                <% if (user.pictures && user.pictures.length > 1) { %>
-                    <img src="/<%= user.pictures[1] %>" alt="Image 2">
-                <% } %>
+                <label>Created At:</label>
+                <div>Date: <%= new Date(user.createdAt).toLocaleDateString() %></div>
+                <div>Time: <%= new Date(user.createdAt).toLocaleTimeString() %></div>
             </div>
             <div class="form-group">
-                <label for="image3">Image 3</label>
-                <input type="file" class="form-control-file" id="image3" name="image" accept="image/*">
-                <% if (user.pictures && user.pictures.length > 2) { %>
-                    <img src="/uploads/<%= user.pictures[2] %>" alt="Image 3">
-                <% } %>
+                <label>Updated At:</label>
+                <div>Date: <%= new Date(user.updatedAt).toLocaleDateString() %></div>
+                <div>Time: <%= new Date(user.updatedAt).toLocaleTimeString() %></div>
             </div>
             
-            
-            
-
             <!-- Other form fields -->
             <button type="submit" class="btn btn-primary">Update Profile</button>
         </form>
-        
-        
-        
     </div>
 
     <!-- Bootstrap JS (optional) -->

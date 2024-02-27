@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Main Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Edit Main Page</h1>
+    <form action="/admin" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= mainPageContent ? mainPageContent.title : '' %>">
+            <!-- Color picker for title color -->
+            <input type="color" id="titleColor" name="titleColor" value="<%= mainPageContent ? mainPageContent.titleColor : '#000000' %>">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3"><%= mainPageContent ? mainPageContent.description : '' %></textarea>
+            <!-- Color picker for description color -->
+            <input type="color" id="descriptionColor" name="descriptionColor" value="<%= mainPageContent ? mainPageContent.descriptionColor : '#000000' %>">
+        </div>
+        <% for (let i = 0; i < 3; i++) { %>
+            <div class="form-group">
+                <label for="image<%= i + 1 %>">Carousel Image <%= i + 1 %></label>
+                <input type="text" class="form-control" id="image<%= i + 1 %>" name="carouselImages[]" placeholder="Image URL" value="<%= mainPageContent && mainPageContent.carouselImages[i] ? mainPageContent.carouselImages[i] : '' %>">
+            </div>
+        <% } %>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

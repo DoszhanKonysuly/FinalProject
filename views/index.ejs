@@ -1,0 +1,35 @@
+<!-- index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <!-- Header with Bootstrap styling -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Your Website</a>
+            <!-- Button to admin page -->
+            <% if (user) { %>
+                <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+            <% } %>
+            <% if (isAdmin) { %>
+                <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+            <% } %>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <!-- Content of your index page goes here -->
+        <h1>Welcome to Your Website</h1>
+        <!-- Add your content here -->
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

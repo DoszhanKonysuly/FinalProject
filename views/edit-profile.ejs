@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Edit Profile</h1>
+        <% console.log('User pictures:', user.pictures); %>
+        <form action="/edit-profile" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div><!-- Update the HTML to display images -->
+            <div class="form-group">
+                <label for="image1">Image 1</label>
+                <input type="file" class="form-control-file" id="image1" name="image" accept="image/*">
+                <% if (user.pictures && user.pictures.length > 0) { %>
+                    <img src="/<%= user.pictures[0] %>" alt="Image 1">
+                <% } %>
+            </div>
+            <div class="form-group">
+                <label for="image2">Image 2</label>
+                <input type="file" class="form-control-file" id="image2" name="image" accept="image/*">
+                <% if (user.pictures && user.pictures.length > 1) { %>
+                    <img src="/<%= user.pictures[1] %>" alt="Image 2">
+                <% } %>
+            </div>
+            <div class="form-group">
+                <label for="image3">Image 3</label>
+                <input type="file" class="form-control-file" id="image3" name="image" accept="image/*">
+                <% if (user.pictures && user.pictures.length > 2) { %>
+                    <img src="/uploads/<%= user.pictures[2] %>" alt="Image 3">
+                <% } %>
+            </div>
+            
+            
+            
+
+            <!-- Other form fields -->
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+        
+        
+        
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

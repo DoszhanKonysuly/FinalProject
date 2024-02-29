@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Main Page</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">FinalProject</a>
+            <div>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/words">Words</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/planets">Planets</a>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+                <% } %>
+            </nav>
+            </div>
+            
+    </header>
 
 <div class="container mt-5">
     <h1>Edit Main Page</h1>
@@ -15,13 +35,11 @@
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" name="title" value="<%= mainPageContent ? mainPageContent.title : '' %>">
-            <!-- Color picker for title color -->
             <input type="color" id="titleColor" name="titleColor" value="<%= mainPageContent ? mainPageContent.titleColor : '#000000' %>">
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3"><%= mainPageContent ? mainPageContent.description : '' %></textarea>
-            <!-- Color picker for description color -->
             <input type="color" id="descriptionColor" name="descriptionColor" value="<%= mainPageContent ? mainPageContent.descriptionColor : '#000000' %>">
         </div>
         <% for (let i = 0; i < 3; i++) { %>
@@ -33,8 +51,12 @@
         <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+        <span class="text-muted">Konysuly Doszhan IT-2204</span>
+    </div>
+</footer>
 
-<!-- Bootstrap JS (optional) -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

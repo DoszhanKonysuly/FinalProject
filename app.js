@@ -7,8 +7,8 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs'); // Set EJS as the view engine
-app.set('views', './views'); // Set the views directory
+app.set('view engine', 'ejs'); 
+app.set('views', './views'); 
 app.use(express.static('public'));
 app.use(session({
     secret: 'your-secret-key',
@@ -22,11 +22,17 @@ const registerRoute = require('./routes/register');
 const indexRoute = require('./routes/index');
 const adminRoute = require('./routes/admin');
 const editProfileRouter = require('./routes/edit-profile');
+const logoutRouter = require('./routes/logout');
+const wordsRouter = require('./routes/words');
+const planetsRouter = require('./routes/planets');
 app.use('/login', loginRoute);
 app.use('/register', registerRoute);
-app.use('/admin', isAuthenticated, adminRoute); // Protected route
+app.use('/admin', isAuthenticated, adminRoute);
 app.use('/', indexRoute);
 app.use('/edit-profile', isAuthenticated, editProfileRouter);
+app.use('/logout', logoutRouter);
+app.use('/words', wordsRouter);
+app.use('/planets', planetsRouter);
 
 // Start server
 const PORT = process.env.PORT || 3000;

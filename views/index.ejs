@@ -5,13 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Style for carousel images */
         #mainCarousel .carousel-inner .carousel-item img {
-            height: 300px; /* Set a fixed height for the images */
-            object-fit: cover; /* Cover the entire container */
+            height: 600px;
+            object-fit: cover;
         }
 
         #mainTitle {
@@ -25,31 +23,34 @@
 </head>
 <body>
     <header>
-        <!-- Header with Bootstrap styling -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">FinalProject</a>
-            <!-- Button to admin page -->
-            <% if (user) { %>
-                <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
-            <% } %>
-            <% if (isAdmin) { %>
-                <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
-            <% } %>
-        </nav>
+            <a class="navbar-brand" href="/">FinalProject</a>
+            <div>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/words">Words</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/planets">Planets</a>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+                <% } %>
+            </nav>
+            </div>
+            
     </header>
 
     <div class="container mt-5">
-        <!-- Content of your index page goes here -->
         <h1 id="mainTitle"><%= mainPageContent ? mainPageContent.title : '' %></h1>
-        <!-- Add your content here -->
     </div>
 
     <div id="mainCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
-            <!-- Indicators will be added dynamically with JavaScript -->
         </ol>
         <div class="carousel-inner">
-            <!-- Carousel items for images will be added dynamically with JavaScript -->
             <% if (mainPageContent && mainPageContent.carouselImages) { %>
                 <% mainPageContent.carouselImages.forEach((image, index) => { %>
                     <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
@@ -72,9 +73,58 @@
         <p id="mainDescription"><%= mainPageContent ? mainPageContent.description : '' %></p>
     </div>
 
-    <!-- Bootstrap JS (optional) -->
+    <div id="randomQuoteContainer" class="container mt-4 text-center">
+        <h2>Random Quote</h2>
+        <blockquote id="randomQuote" class="blockquote"></blockquote>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Konysuly Doszhan IT-2204</span>
+        </div>
+    </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        async function fetchRandomQuote() {
+            try {
+                const response = await fetch('https://andruxnet-random-famous-quotes.p.rapidapi.com/?cat=movies&count=1', {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': '9fb13699fbmshd4fd5deb96277d2p1a213bjsn1cd7bfc0f22a',
+                        'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
+                    }
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Failed to fetch quote.');
+                }
+    
+                const data = await response.json();
+                return { quote: data[0].quote, author: data[0].author };
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
+    
+        async function updateRandomQuote() {
+            const quoteContainer = document.getElementById('randomQuote');
+            quoteContainer.textContent = 'Loading...';
+    
+            const randomQuote = await fetchRandomQuote();
+            if (randomQuote) {
+                quoteContainer.textContent = `"${randomQuote.quote}" - ${randomQuote.author}`;
+                const footer = document.querySelector('.footer');
+                footer.style.marginTop = '50px'; 
+            } else {
+                quoteContainer.textContent = 'Failed to fetch quote.';
+            }
+        }
+    
+        window.addEventListener('load', updateRandomQuote);
+    </script>
 </body>
 </html>

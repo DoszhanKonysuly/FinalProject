@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">FinalProject</a>
+            <div>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/words">Words</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/planets">Planets</a>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+                <% } %>
+            </nav>
+            </div>
+            
+    </header>
+
     <div class="container mt-5">
         <h1>Edit Profile</h1>
         <form action="/edit-profile" method="POST">
@@ -38,12 +58,18 @@
                 <div>Time: <%= new Date(user.updatedAt).toLocaleTimeString() %></div>
             </div>
             
-            <!-- Other form fields -->
             <button type="submit" class="btn btn-primary">Update Profile</button>
         </form>
+        <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-danger mt-3">Logout</button>
+        </form>
     </div>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Konysuly Doszhan IT-2204</span>
+        </div>
+    </footer>
 
-    <!-- Bootstrap JS (optional) -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

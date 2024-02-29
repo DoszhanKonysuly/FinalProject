@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planets Information</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">FinalProject</a>
+            <div>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/words">Words</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/planets">Planets</a>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+                <% } %>
+            </nav>
+            </div>
+            
+    </header>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Planets Information</h1>
+
+        <form id="planetForm" class="mb-4">
+            <div class="form-group">
+                <label for="planetOrder">Enter Planet Order:</label>
+                <input type="number" id="planetOrder" class="form-control" placeholder="Enter planet order" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Planet Information</button>
+        </form>
+
+        <div id="planetInfo">
+            <% if (planetData === null) { %>
+                <p class="text-center">No planet selected yet.</p>
+            <% } else { %>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2>Planet <%= planetData.planetOrder %>: <%= planetData.name %></h2>
+                    </div>
+                    <div class="card-body">
+                        <p><%= planetData.description %></p>
+                        <p><strong>Volume:</strong> <%= planetData.basicDetails.volume %></p>
+                        <p><strong>Mass:</strong> <%= planetData.basicDetails.mass %></p>
+                        <p><strong>Source:</strong> <%= planetData.basicDetails.source %></p>
+                        <p><strong>Wiki Link:</strong> <a href="<%= planetData.basicDetails.wikiLink %>" target="_blank"><%= planetData.basicDetails.wikiLink %></a></p>
+                        <img src="<%= planetData.imgSrc.img %>" alt="<%= planetData.imgSrc.imgDescription %>" class="img-fluid">
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Konysuly Doszhan IT-2204</span>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $('#planetForm').submit(function(event) {
+            event.preventDefault();
+            var planetOrder = $('#planetOrder').val();
+            
+            if (planetOrder.trim() === '') {
+                $('#planetInfo').html('<p class="text-center">Please enter planet order.</p>');
+                return;
+            }
+
+            const settings = {
+                async: true,
+                crossDomain: true,
+                url: '/planets/api/' + planetOrder,
+                method: 'GET'
+            };
+
+            $.ajax(settings).done(function(response) {
+                $('#planetInfo').empty();
+
+                if ($.isEmptyObject(response)) {
+                    $('#planetInfo').html('<p class="text-center">No data found for this planet order.</p>');
+                    return;
+                }
+
+                $('#planetInfo').append(`
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h2>Planet ${response.planetOrder}: ${response.name}</h2>
+                        </div>
+                        <div class="card-body">
+                            <p>${response.description}</p>
+                            <p><strong>Volume:</strong> ${response.basicDetails.volume}</p>
+                            <p><strong>Mass:</strong> ${response.basicDetails.mass}</p>
+                            <p><strong>Source:</strong> ${response.source}</p>
+                            <p><strong>Wiki Link:</strong> <a href="${response.wikiLink}" target="_blank">${response.name}</a></p>
+                            <img src="${response.imgSrc.img}" alt="${response.imgSrc.imgDescription}" class="img-fluid">
+                        </div>
+                    </div>
+                `);
+            }).fail(function() {
+                $('#planetInfo').html('<p class="text-center">Failed to fetch data. Please try again later.</p>');
+            });
+        });
+    </script>
+</body>
+</html>

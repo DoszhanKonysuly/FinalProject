@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Information</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">FinalProject</a>
+            <div>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/edit-profile">Profile</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/words">Words</a>
+                <% } %>
+                <% if (user) { %>
+                    <a class="btn btn-primary ml-2" href="/planets">Planets</a>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <a class="btn btn-primary ml-auto" href="/admin">Admin Page</a>
+                <% } %>
+            </nav>
+            </div>
+            
+    </header>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Word Information</h1>
+
+    <form id="wordForm" class="mb-4">
+        <div class="input-group">
+            <input type="text" id="wordInput" class="form-control" placeholder="Enter a word">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Get Data</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="wordInfo">
+        <% if (wordData === null) { %>
+            <p class="text-center">No word searched yet.</p>
+        <% } else { %>
+            <% wordData.results.forEach(function(result) { %>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2><%= result.partOfSpeech %></h2>
+                        <p class="card-text"><%= result.definition %></p>
+                        <% if (result.synonyms && result.synonyms.length > 0) { %>
+                            <p class="card-text"><strong>Synonyms:</strong> <%= result.synonyms.join(', ') %></p>
+                        <% } %>
+                        <% if (result.antonyms && result.antonyms.length > 0) { %>
+                            <p class="card-text"><strong>Antonyms:</strong> <%= result.antonyms.join(', ') %></p>
+                        <% } %>
+                        <% if (result.examples && result.examples.length > 0) { %>
+                            <p class="card-text"><strong>Examples:</strong></p>
+                            <ul class="list-group list-group-flush">
+                                <% result.examples.forEach(function(example) { %>
+                                    <li class="list-group-item"><%= example %></li>
+                                <% }); %>
+                            </ul>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</div>
+
+<script>
+$('#wordForm').submit(function(event) {
+    event.preventDefault(); 
+    var word = $('#wordInput').val();
+    
+    if(word.trim() === '') {
+        $('#wordInfo').html('<p class="text-center">Please enter a word.</p>');
+        return;
+    }
+
+    const settings = {
+        async: true,
+        crossDomain: true,
+        url: '/words/api/' + word,
+        method: 'GET'
+    };
+
+    $.ajax(settings).done(function (response) {
+        $('#wordInfo').empty();
+        
+        if ($.isEmptyObject(response)) {
+            $('#wordInfo').html('<p class="text-center">No data found for this word.</p>');
+            return;
+        }
+
+        response.results.forEach(function(result) {
+            $('#wordInfo').append(`
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2>${result.partOfSpeech}</h2>
+                        <p class="card-text">${result.definition}</p>
+                        ${result.synonyms && result.synonyms.length > 0 ? `<p class="card-text"><strong>Synonyms:</strong> ${result.synonyms.join(', ')}</p>` : ''}
+                        ${result.antonyms && result.antonyms.length > 0 ? `<p class="card-text"><strong>Antonyms:</strong> ${result.antonyms.join(', ')}</p>` : ''}
+                        ${result.examples && result.examples.length > 0 ? `
+                            <p class="card-text"><strong>Examples:</strong></p>
+                            <ul class="list-group list-group-flush">
+                                ${result.examples.map(example => `<li class="list-group-item">${example}</li>`).join('')}
+                            </ul>` : ''}
+                    </div>
+                </div>
+            `);
+        });
+    }).fail(function() {
+        $('#wordInfo').html('<p class="text-center">Failed to fetch data. Please try again later.</p>');
+    });
+});
+</script>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+        <span class="text-muted">Konysuly Doszhan IT-2204</span>
+    </div>
+</footer>
+
+</body>
+</html>

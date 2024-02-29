@@ -2,11 +2,11 @@
 const mongoose = require('mongoose');
 
 const mainPageSchema = new mongoose.Schema({
-    carouselImages: [String], // Array of image URLs for carousel
+    carouselImages: [String], 
     title: String,
     description: String,
-    titleColor: String, // Color for the title
-    descriptionColor: String // Color for the description
+    titleColor: String, 
+    descriptionColor: String 
 });
 
 const MainPage = mongoose.model('MainPage', mainPageSchema);
